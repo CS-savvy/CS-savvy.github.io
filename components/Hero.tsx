@@ -70,7 +70,7 @@ export default function Hero() {
           <span className="text-zinc-300 font-medium">Computer Vision</span>,{" "}
           <span className="text-zinc-300 font-medium">NLP</span>, and{" "}
           <span className="text-zinc-300 font-medium">Production ML Systems</span>.
-          Senior Data Scientist with 6+ years building enterprise-grade AI that ships, scales,
+          Senior Data Scientist with 8+ years building enterprise-grade AI that ships, scales,
           and delivers measurable impact. MTech AI at BITS Pilani.
         </motion.p>
 
