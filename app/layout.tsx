@@ -12,7 +12,7 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "Mukul Kumar — Applied AI Engineer",
   description:
-    "Applied AI Engineer specializing in Computer Vision, NLP, and Production ML Systems. 6+ years building enterprise-grade AI with 5 filed patents and research published at KDD.",
+    "Applied AI Engineer specializing in Computer Vision, NLP, and Production ML Systems. 8+ years building enterprise-grade AI with 5 filed patents and research published at KDD.",
   keywords: [
     "AI Engineer",
     "Computer Vision",
