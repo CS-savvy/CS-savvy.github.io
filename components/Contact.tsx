@@ -3,11 +3,12 @@
 import { useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
 
+
 const contactLinks = [
   {
     label: "Email",
-    value: "mukul.kr99@gmail.com",
-    href: "mailto:mukul.kr99@gmail.com",
+    value: "contact@mukulkumar.dev",
+    href: "mailto:contact@mukulkumar.dev",
     icon: (
       <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
@@ -42,10 +43,28 @@ export default function Contact() {
   const [formState, setFormState] = useState({ name: "", email: "", message: "" });
   const [submitted, setSubmitted] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Placeholder — wire up to your preferred form backend (Formspree, Resend, etc.)
-    setSubmitted(true);
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formState),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to send message");
+      }
+
+      setSubmitted(true);
+      setFormState({ name: "", email: "", message: "" });
+    } catch (error) {
+      console.error(error);
+      alert("Something went wrong. Please try again.");
+    }
   };
 
   return (
@@ -198,8 +217,8 @@ export default function Contact() {
                 </button>
                 <p className="text-xs text-zinc-600 text-center">
                   Or email directly at{" "}
-                  <a href="mailto:mukul.kr99@gmail.com" className="text-zinc-400 hover:text-white transition-colors">
-                    mukul.kr99@gmail.com
+                  <a href="mailto:contact@mukulkumar.dev" className="text-zinc-400 hover:text-white transition-colors">
+                    contact@mukulkumar.dev
                   </a>
                 </p>
               </form>
