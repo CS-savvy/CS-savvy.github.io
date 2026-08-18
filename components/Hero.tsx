@@ -3,10 +3,10 @@
 import { motion } from "framer-motion";
 
 const proofSignals = [
-  { value: "6+", label: "Years Building\nML Systems" },
+  { value: "8+", label: "Years Building\nML Systems" },
   { value: "5", label: "Filed\nPatents" },
   { value: "2", label: "Published\nResearch Papers" },
-  { value: "40+", label: "Cameras\nDeployed" },
+  { value: "50+", label: "Projects\&POCs\ncompleted" },
 ];
 
 const fadeUp = (delay = 0) => ({
