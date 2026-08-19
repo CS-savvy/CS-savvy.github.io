@@ -1,14 +1,15 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Image from "next/image";
 import Link from "next/link";
 
 const navLinks = [
-  { label: "Work", href: "#projects" },
-  { label: "Services", href: "#services" },
-  { label: "Research", href: "#research" },
-  { label: "Blog", href: "#blog" },
-  { label: "Contact", href: "#contact" },
+  { label: "Work", href: "/#projects" },
+  { label: "Services", href: "/#services" },
+  { label: "Research", href: "/#research" },
+  { label: "Blog", href: "/blogs" },
+  { label: "Contact", href: "/#contact" },
 ];
 
 export default function Navigation() {
@@ -35,9 +36,13 @@ export default function Navigation() {
           href="/"
           className="font-bold text-lg tracking-tight text-white flex items-center gap-2 group"
         >
-          <span className="w-8 h-8 rounded-lg bg-indigo-500 flex items-center justify-center text-xs font-bold text-white group-hover:bg-indigo-400 transition-colors">
-            MK
-          </span>
+          <Image
+            src="/profile_picture.jpg"
+            alt="Mukul Kumar"
+            width={32}
+            height={32}
+            className="h-8 w-8 rounded-lg object-cover transition-opacity group-hover:opacity-80"
+          />
           <span className="text-zinc-300 group-hover:text-white transition-colors text-sm hidden sm:block">
             Mukul Kumar
           </span>
@@ -55,7 +60,7 @@ export default function Navigation() {
             </a>
           ))}
           <a
-            href="#contact"
+            href="/#contact"
             className="text-sm px-4 py-2 bg-indigo-500 hover:bg-indigo-400 text-white rounded-lg transition-all duration-200 font-medium shadow-lg shadow-indigo-500/20 hover:shadow-indigo-400/30"
           >
             Hire Me
@@ -95,7 +100,7 @@ export default function Navigation() {
               </a>
             ))}
             <a
-              href="#contact"
+              href="/#contact"
               className="text-sm px-5 py-3 bg-indigo-500 hover:bg-indigo-400 text-white rounded-xl transition-colors font-medium text-center mt-2"
               onClick={() => setMenuOpen(false)}
             >
