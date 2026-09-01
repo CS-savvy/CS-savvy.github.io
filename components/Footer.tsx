@@ -1,11 +1,12 @@
+import Image from "next/image";
 import Link from "next/link";
 
 const footerLinks = [
-  { label: "Projects", href: "#projects" },
-  { label: "Services", href: "#services" },
-  { label: "Research", href: "#research" },
-  { label: "Blog", href: "#blog" },
-  { label: "Contact", href: "#contact" },
+  { label: "Projects", href: "/#projects" },
+  { label: "Services", href: "/#services" },
+  { label: "Research", href: "/#research" },
+  { label: "Blog", href: "/blogs" },
+  { label: "Contact", href: "/#contact" },
 ];
 
 const socialLinks = [
@@ -37,9 +38,13 @@ export default function Footer() {
           {/* Brand */}
           <div className="text-center md:text-left">
             <Link href="/" className="inline-flex items-center gap-2 mb-2">
-              <span className="w-7 h-7 rounded-lg bg-indigo-500 flex items-center justify-center text-xs font-bold text-white">
-                MK
-              </span>
+              <Image
+                src="/profile_picture.jpg"
+                alt="Mukul Kumar"
+                width={28}
+                height={28}
+                className="h-7 w-7 rounded-lg object-cover"
+              />
               <span className="font-semibold text-white">Mukul Kumar</span>
             </Link>
             <p className="text-xs text-zinc-600">

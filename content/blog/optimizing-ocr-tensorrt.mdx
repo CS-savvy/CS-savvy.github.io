@@ -1,0 +1,78 @@
+---
+title: "Optimizing OCR Pipelines Using TensorRT"
+slug: "optimizing-ocr-tensorrt"
+date: "2026-08-19"
+tags: ["OCR", "TensorRT", "Optimization"]
+excerpt: "How we reduced inference latency by 60% on a production OCR system processing millions of receipts — the exact techniques, trade-offs, and lessons learned."
+image: "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1800&q=85"
+imageAlt: "Close-up of computer hardware and circuit boards"
+canonical: "https://mukulkumar.dev/blog/optimizing-ocr-tensorrt"
+published: false
+readingTime: "8 min read"
+---
+
+## The Problem
+
+Our OCR pipeline was processing millions of receipts across 10+ countries, but inference latency was becoming a bottleneck at scale. This post walks through how we used TensorRT to cut latency by 60% without sacrificing extraction accuracy.
+
+## Baseline
+
+- Model architecture: _TODO — describe base OCR/detection model (GAT-based layout detection + NER pipeline per your KDD 2022 work)_
+- Original inference latency: _TODO — fill in your actual pre-optimization numbers_
+- Hardware: _TODO — GPU/edge target_
+
+## Optimization Approach
+
+### 1. Model Conversion to TensorRT
+
+TensorRT is NVIDIA's inference optimizer and runtime, built to squeeze low latency and high throughput out of trained models by restructuring and recompiling them for a specific GPU target. The general pipeline is: export the trained model to ONNX, then build a TensorRT engine from that ONNX graph, optionally applying precision calibration along the way.
+
+Under the hood, the builder applies a few standard techniques worth naming in a technical writeup:
+- **Layer fusion** — collapsing chains like Conv → BatchNorm → ReLU into a single CUDA kernel, cutting kernel-launch overhead.
+- **Kernel auto-tuning** — picking the fastest available kernel implementation for the target GPU (A100, RTX, Jetson, etc.) rather than a generic one.
+- **Precision calibration** — converting FP32 weights down to FP16 or INT8 where accuracy allows.
+- **Dynamic tensor memory** — pooled memory allocation to cut per-inference overhead.
+
+```python
+# TODO: add your actual ONNX export + TensorRT engine build snippet
+# General shape:
+# 1. torch.onnx.export(model, dummy_input, "model.onnx")
+# 2. trtexec --onnx=model.onnx --saveEngine=model.trt --fp16
+```
+
+### 2. Batching Strategy
+
+For receipt-layout documents with variable sizes, dynamic batching is generally the right call over static batching. As a rule of thumb from NVIDIA's own optimization guidance, when a network includes matrix-multiply layers, batch sizes in multiples of 32 tend to perform best for FP16/INT8 inference, since that's what lets Tensor Cores be fully utilized on supported hardware.
+
+_TODO — describe your actual batching setup and any receipt-specific constraints (variable document sizes, multi-language OCR batches, etc.)_
+
+### 3. Precision Tuning
+
+TensorRT supports running individual layers in FP32, FP16, BF16, FP8, or INT8, and by default picks whichever precision gives the best performance for that layer. The general trade-off:
+
+- **FP16** is usually the best starting point for the accuracy/performance balance — commonly cited as roughly half the memory footprint and meaningfully faster inference versus FP32, with public benchmarks showing accuracy drops in the low single digits depending on the model and dataset.
+- **INT8** pushes further — public examples report model size reductions of around 70% versus FP32 with in some cases negligible additional accuracy loss over FP16 — but it typically requires a calibration dataset that's representative of your real traffic (in your case, receipt layouts across the languages/currencies/merchants you support).
+
+_TODO — state which precision you landed on for the OCR/NER stages and why_
+
+## Results
+
+| Metric | Before | After |
+|---|---|---|
+| Latency | _TODO_ | 60% reduction (per your published figure) |
+| Throughput | _TODO_ | _TODO_ |
+| Accuracy | _TODO_ | 94%+ extraction accuracy (per your published figure) |
+
+## Lessons Learned
+
+- _TODO — e.g. calibration dataset representativeness mattered more than architecture choice_
+- _TODO — e.g. multi-language receipts exposed edge cases FP16 alone didn't handle_
+- _TODO — e.g. engine portability: TensorRT engines are GPU-architecture specific, so re-building per deployment target was necessary_
+
+## Closing Thoughts
+
+_TODO — wrap-up, what you'd do differently, link to your KDD 2022 paper and related patents_
+
+---
+
+*This post is a placeholder — replace all TODO sections with real details before publishing. Set `published: true` in the frontmatter when ready to go live.*

@@ -2,6 +2,7 @@
 
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
+import Link from "next/link";
 
 const posts = [
   {
@@ -12,6 +13,7 @@ const posts = [
     readTime: "8 min read",
     tags: ["OCR", "TensorRT", "Optimization"],
     color: "indigo",
+    slug: "optimizing-ocr-tensorrt",
   },
   {
     title: "Lessons from Deploying CV Models on 40+ Cameras",
@@ -72,7 +74,15 @@ export default function Blog() {
           className="mb-16"
         >
           <p className="section-label mb-3">Writing</p>
-          <h2 className="section-heading mb-5">Technical Insights</h2>
+          <div className="flex flex-wrap items-end justify-between gap-5">
+            <h2 className="section-heading">Technical Insights</h2>
+            <Link
+              href="/blogs"
+              className="text-sm font-medium text-indigo-300 transition-colors hover:text-white"
+            >
+              View all articles →
+            </Link>
+          </div>
           <p className="text-zinc-500 max-w-2xl text-lg leading-relaxed">
             Practical lessons from building production AI systems. No theory — only what
             actually works (and what doesn&apos;t) in the real world.
@@ -102,7 +112,13 @@ export default function Blog() {
               </div>
 
               <h3 className="text-lg font-semibold text-white mb-3 leading-snug group-hover:text-indigo-300 transition-colors">
-                {post.title}
+                {post.slug ? (
+                  <Link href={`/blog/${post.slug}`}>
+                    {post.title}
+                  </Link>
+                ) : (
+                  post.title
+                )}
               </h3>
               <p className="text-sm text-zinc-500 leading-relaxed mb-5">{post.excerpt}</p>
 
